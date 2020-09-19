@@ -4,20 +4,43 @@ public class Movie {
     public static final int NEW_RELEASE=1;
 
     private String _title;
-    private int _priceCode;
+    private Price _price;
 
-    public Movie(String Title, int priceCode){
+    public Movie(String Title, int priceCode) throws IllegalAccessException {
         _title= Title;
-        _priceCode = priceCode;
+        setPriceCode(priceCode);
     }
     public int getPriceCode(){
-        return _priceCode;
+        return _price.getPriceCode();
     }
-    public void setPriceCode(int arg){
-        _priceCode=arg;
+    public void setPriceCode(int arg) throws IllegalAccessException {
+        switch(arg)
+        {
+            case REGULAR:
+                _price = new RegularPrice();
+                break;
+            case NEW_RELEASE:
+                _price = new NewReleasePrice();
+                break;
 
+            case CHILDREN:
+                _price = new ChildrenPrice();
+                break;
+
+            default:
+                throw new IllegalAccessException("Incorrect Price Code");
+        }
+    }
+
+    double getCharge (int daysRented){
+        return _price.getCharge(daysRented);
     }
     public String getTitle(){
         return _title;
+    }
+
+    int getFrequentRenterPoints(int daysRented) {
+
+        return _price.getFrequentRenterPoints(daysRented);
     }
 }
